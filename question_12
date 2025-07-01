@@ -1,0 +1,125 @@
+Q-Using a base class CStaff having data members - Employee Code and Name, derive three classes:
+a) CTeacher having data members - Subject and Publication
+b) CTypist having data member - Speed and two derived classes:
+     1) CRegular
+     2) CTemporary having data member - Daily Wages 
+c) COfficer having data member - Grade
+Further, add a class CEducation having data members - Highest General Qualification and Highest Professional Qualification, and is inherited by CTeacher and COfficer.
+Make extensive use of overloaded constructors in various classes.
+code-
+
+#include <iostream>
+using namespace std;
+class CStaff
+{
+private:
+static int employee_code;
+string name;
+public:
+CStaff(string n) : name(n)
+{}
+
+void display()
+{
+cout << "Name: " << name << endl;
+}
+};
+int CStaff::employee_code = 0;
+class CTeacher : public CStaff
+{
+private:
+string subject;
+string publication;
+public:
+CTeacher(int code, string n, string subject_name, string pub_name) :
+CStaff(n), subject(subject_name), publication(pub_name)
+{}
+void display()
+{
+CStaff::display();
+cout << "Subject: " << subject << endl;
+cout << "Publication: " << publication << endl;
+}
+};
+class CTypist : public CStaff
+{
+private:
+int speed;
+public:
+CTypist(int code, string n, int speed_value) : CStaff(n), speed(speed_value)
+{}
+void display()
+{
+CStaff::display();
+cout << "Speed: " << speed << " wpm" << endl;
+}
+};
+class COfficer : public CStaff
+{
+private:
+
+char grade;
+public:
+COfficer(int code, string n, char grade_value) : CStaff(n),
+grade(grade_value)
+{}
+void display()
+{
+CStaff::display();
+cout << "Grade: " << grade << endl;
+}
+};
+class CEducation : public CTeacher, public COfficer
+{
+private:
+string gen_qualification;
+string prof_qualification;
+public:
+CEducation(int code, string n, string subject_name, string pub_name, char
+grade_value, string gen, string prof)
+: CTeacher(code, n, subject_name, pub_name), COfficer(code, n,
+grade_value), gen_qualification(gen), prof_qualification(prof)
+{}
+void display() {
+CTeacher::display();
+COfficer::display();
+cout << "General Qualification: " << gen_qualification << endl;
+cout << "Professional Qualification: " << prof_qualification << endl;
+}
+};
+class CRegular : public CTypist
+{
+public:
+CRegular(int code, string n, int speed_value) : CTypist(code, n, speed_value)
+{}
+void display() {
+CTypist::display();
+}
+};
+class CTemporary : public CTypist
+
+{
+private:
+int daily_wages;
+public:
+CTemporary(int code, string n, int speed_value, int wages) : CTypist(code, n,
+speed_value), daily_wages(wages)
+{}
+void display() {
+CTypist::display();
+cout << "Daily Wages: $" << daily_wages << endl;
+}
+};
+int main()
+{
+CEducation edu(1, "John", "Math", "Book", 'A', "PhD", "M.Ed");
+CRegular reg(2, "Alice", 60);
+CTemporary temp(3, "Bob", 55, 100);
+cout << "Education Staff:" << endl;
+edu.display();
+cout << "\nRegular Staff:" << endl;
+reg.display();
+cout << "\nTemporary Staff:" << endl;
+temp.display();
+return 0;
+}
