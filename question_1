@@ -1,0 +1,109 @@
+Q-Write a menu driven program in C++ to record name, password (min. 8 digits including uppercase, lowercase, digit and symbol) and access rights (R, W, X) of users such that 
+1) All variables have some initial value. 
+2) Password and access rights can be changed via functions only.
+
+code-
+#include <iostream>
+using namespace std;
+
+// 🎓 Class Definition: Cstudent
+class Cstudent {
+private:
+    string name;
+    string password;
+    char studentaccess;
+
+    // 🔐 Helper function to validate password rules
+    bool isValidPassword(string pwd) {
+        int capletters = 0, smallletters = 0, number = 0, specialchar = 0;
+
+        for (int i = 0; i < pwd.length(); i++) {
+            char c = pwd[i];
+            if (c >= 'A' && c <= 'Z') capletters++;
+            else if (c >= 'a' && c <= 'z') smallletters++;
+            else if (c >= '0' && c <= '9') number++;
+            else specialchar++;
+        }
+
+        return (pwd.length() >= 8 && capletters && smallletters && number && specialchar);
+    }
+
+public:
+    // 📥 Function to record student's name
+    void getname() {
+        cout << "Enter your name: ";
+        cin >> name;
+    }
+
+    // 🔐 Function to set a secure password
+    void setpassword() {
+        cout << "\nPassword must meet the following criteria:\n";
+        cout << "- Minimum 8 characters\n";
+        cout << "- At least one uppercase letter\n";
+        cout << "- At least one lowercase letter\n";
+        cout << "- At least one digit\n";
+        cout << "- At least one special character\n";
+
+        cout << "Enter your password: ";
+        cin >> password;
+
+        if (!isValidPassword(password)) {
+            cout << "\n❌ Invalid password! Please re-enter.\n";
+            setpassword(); // recursion to re-ask
+        } else {
+            cout << "✅ Password set successfully.\n";
+        }
+    }
+
+    // 🔐 Function to get access rights
+    void getstudentaccess() {
+        cout << "\nSet Access Rights:\n";
+        cout << "Type X for Text, W for Write, R for Read: ";
+        cin >> studentaccess;
+
+        if (studentaccess == 'X' || studentaccess == 'W' || studentaccess == 'R') {
+            cout << "✅ Access code accepted.\n";
+        } else {
+            cout << "❌ Invalid access code! Please try again.\n";
+            getstudentaccess(); // recursion to re-ask
+        }
+    }
+};
+
+
+
+// 🟩 Main Function: Menu-driven interface
+int main() {
+    Cstudent objstudent;
+    int choice;
+
+    do {
+        cout << "\n========= Student Menu =========\n";
+        cout << "1. Record User Name\n";
+        cout << "2. Change Password\n";
+        cout << "3. Set Access Right\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                objstudent.getname();
+                break;
+            case 2:
+                objstudent.setpassword();
+                break;
+            case 3:
+                objstudent.getstudentaccess();
+                break;
+            case 4:
+                cout << "✅ Exiting the program. Goodbye!\n";
+                return 0;
+            default:
+                cout << "❌ Invalid choice. Please select a valid option.\n";
+        }
+
+    } while (true);
+
+    return 0;
+}
