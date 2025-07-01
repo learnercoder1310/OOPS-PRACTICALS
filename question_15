@@ -1,0 +1,66 @@
+Q-Create a class CEmployee having following data members: Name, Age and Salary; and methods - getData() and displayData() to fetch and display the information.
+Further, the program includes user-defined exceptions to handle the following exceptions which occur when:
+a) Name contains numeric character (s).
+b) Age < 18 or > 65
+c) Salary is either less than 10,000 or contains any special character.
+d) User assigns any value to the data member (s) other than the specified data type. 
+code-
+#include <iostream>
+#include <string>
+#include <stdexcept>
+
+class CEmployee {
+private:
+    std::string name;
+    int age;
+    float salary;
+
+public:
+    CEmployee() : name(""), age(0), salary(0.0) {}
+
+    void getData() {
+        try {
+            std::cout << "Enter Name: ";
+            std::cin >> name;
+            for (char c : name) {
+                if (std::isdigit(c)) {
+                    throw std::invalid_argument("Name contains numeric character(s).");
+                }
+            }
+
+            std::cout << "Enter Age: ";
+            std::cin >> age;
+            if (age < 18 || age > 65) {
+                throw std::invalid_argument("Age must be between 18 and 65.");
+            }
+
+            std::cout << "Enter Salary: ";
+            std::cin >> salary;
+            if (salary < 10000) {
+                throw std::invalid_argument("Salary is less than 10,000.");
+            }
+
+            std::string salStr = std::to_string(salary);
+            std::string invalidChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;':\",./<>?";
+            if (salStr.find_first_of(invalidChars) != std::string::npos) {
+                throw std::invalid_argument("Salary contains invalid characters.");
+            }
+
+        } catch (const std::invalid_argument &e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
+
+    void displayData() {
+        std::cout << "Name: " << name << std::endl;
+        std::cout << "Age: " << age << std::endl;
+        std::cout << "Salary: " << salary << std::endl;
+    }
+};
+
+int main() {
+    CEmployee emp;
+    emp.getData();
+    emp.displayData();
+    return 0;
+}
