@@ -1,0 +1,76 @@
+Q-Create a base class - CMammal, having constant data members - name, age and color, and a member function - SetName to set a new name to a mammal. Make use of explicit constructors 
+to assign the initial values. Further, derive two more classes - CCat and CDog, and implement an object factory to create a number of objects of each class depending upon user choice.
+code-
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <typeinfo>
+using namespace std;
+
+class CMammal {
+public:
+    string name;
+    mutable int age;
+    mutable string color;
+
+    explicit CMammal(string a, int b, string c) : name(a), age(b), color(c) {}
+
+    virtual ~CMammal() {}
+
+    void display() const {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Color: " << color << endl;
+    }
+};
+
+class CCat : public CMammal {
+public:
+    CCat(string a, int b, string c) : CMammal(a, b, c) {}
+    ~CCat() override {}
+};
+
+class CDog : public CMammal {
+public:
+    CDog(string a, int b, string c) : CMammal(a, b, c) {}
+    ~CDog() override {}
+};
+
+CMammal* factory() {
+    switch (rand() % 3) {
+        case 0: return new CDog("DogName", 3, "Brown");
+        case 1: return new CCat("CatName", 2, "Gray");
+        case 2: return new CMammal("MammalName", 4, "SomeColor");
+    }
+    return nullptr;
+}
+
+int main() {
+    srand(time(0));
+    int numObjects;
+    cout << "Enter the number of objects to create: ";
+    cin >> numObjects;
+
+    CMammal* ptr;
+    int c = 0, d = 0;
+
+    for (int i = 0; i < numObjects; i++) {
+        ptr = factory();
+        cout << "Object is " << typeid(*ptr).name() << endl;
+        ptr->display();
+
+        if (typeid(*ptr) == typeid(CDog)) {
+            d++;
+        } else if (typeid(*ptr) == typeid(CCat)) {
+            c++;
+        }
+
+        delete ptr;
+    }
+
+    cout << "Animals generated:\n";
+    cout << " Cats: " << c << endl;
+    cout << " Dogs: " << d << endl;
+
+    return 0;
+}
