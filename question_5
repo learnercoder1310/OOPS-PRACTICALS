@@ -1,0 +1,52 @@
+Q-Write a program to implement a singleton class in C++ (a class whose number of instances that can be instantiated is limited to one is called a singleton class). 
+code-
+
+#include <iostream>
+using namespace std;
+
+// 🔒 Singleton Class Definition
+class singleton {
+private:
+    int data;
+    static singleton *instance;
+
+    // 🛠️ Private Constructor
+    singleton() {
+        data = 0;
+    }
+
+public:
+    // 🔁 Static Method to Get Singleton Instance
+    static singleton* getinstance() {
+        if (instance == NULL) {
+            instance = new singleton;
+        }
+        return instance;
+    }
+
+    // 📥 Setter for data
+    void setdata(int data) {
+        this->data = data;
+    }
+
+    // 📤 Getter for data
+    int getdata() {
+        return this->data;
+    }
+};
+
+// 🧷 Initialize static member
+singleton* singleton::instance = nullptr;
+
+// 🟩 Main Function
+int main() {
+    singleton* s = singleton::getinstance();
+
+    cout << s->getdata() << endl;
+
+    s->setdata(100);
+
+    cout << s->getdata() << endl;
+
+    return 0;
+}
