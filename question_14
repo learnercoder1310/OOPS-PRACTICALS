@@ -1,0 +1,76 @@
+Q-Define a function template in C++ to sort an array of elements of inbuilt data types - integer, string, float, and user-defined type Distance class having data members kmeter and meter.
+code-
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Distance {
+public:
+    int kmeter;
+    int meter;
+
+    Distance(int km, int m) : kmeter(km), meter(m) {}
+
+    bool operator>(const Distance& other) const {
+        return (kmeter > other.kmeter) || (kmeter == other.kmeter && meter > other.meter);
+    }
+};
+
+template <class T>
+void sort(T arr[], int n) {
+    T temp;
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] > arr[j]) {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int arr1[] = {5, 8, 1, 4, 2};
+    float arr2[] = {31.1, 8.22, 10.3, 21.4, 1.5};
+    string arr4[] = {"a", "b", "c", "z", "l"};
+    Distance arr3[] = {
+        Distance(51, 200),
+        Distance(32, 500),
+        Distance(13, 100),
+        Distance(32, 400),
+        Distance(10, 50)
+    };
+
+    sort(arr1, 5);
+    sort(arr2, 5);
+    sort(arr4, 5);
+    sort(arr3, 5);
+
+    cout << "Sorted array of integers: ";
+    for (int i = 0; i < 5; i++) {
+        cout << "[" << arr1[i] << "] ";
+    }
+    cout << endl;
+
+    cout << "Sorted array of floats: ";
+    for (int i = 0; i < 5; i++) {
+        cout << "[" << arr2[i] << "] ";
+    }
+    cout << endl;
+
+    cout << "Sorted array of strings: ";
+    for (int i = 0; i < 5; i++) {
+        cout << "[" << arr4[i] << "] ";
+    }
+    cout << endl;
+
+    cout << "Sorted array of Distance objects: ";
+    for (int i = 0; i < 5; i++) {
+        cout << "[" << arr3[i].kmeter << " km " << arr3[i].meter << " m] ";
+    }
+    cout << endl;
+
+    return 0;
+}
