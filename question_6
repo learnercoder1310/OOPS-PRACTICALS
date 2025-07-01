@@ -1,0 +1,92 @@
+Q-Use operator overloading to 
+
+a) compare the arrays using == operator and return true/false. Note that two arrays are equal if they've same dimension, size or values. 
+b) copy one array into another using = operator.
+
+Do the implementation with and without friend function!
+
+code-
+#include <iostream>
+using namespace std;
+
+const int SIZE = 10;
+
+// 📦 Arrays Class
+class Arrays {
+private:
+    int arr[SIZE];  // Fixed-size array
+    int size;       // Actual size of elements entered
+
+public:
+    // 🏗️ Constructor to take input from user
+    Arrays(int size) {
+        this->size = size;
+        cout << "Enter " << size << " elements for the array:" << endl;
+        for (int i = 0; i < size; i++) {
+            cout << "Enter element " << i + 1 << ": ";
+            cin >> arr[i];
+        }
+    }
+
+    // ⚖️ Overloaded '==' operator to compare arrays
+    bool operator ==(const Arrays& obj2) {
+        if (size != obj2.size) {
+            return false;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (arr[i] != obj2.arr[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // 📝 Overloaded '=' operator to copy array contents
+    void operator =(const Arrays& obj2) {
+        size = obj2.size;
+        for (int i = 0; i < size; i++) {
+            arr[i] = obj2.arr[i];
+        }
+    }
+
+    // 📤 Function to display array elements
+    void display() {
+        for (int i = 0; i < size; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+// 🟩 Main Function
+int main() {
+    int size1, size2;
+
+    cout << "Enter the size of first array: ";
+    cin >> size1;
+
+    cout << "Enter the size of second array: ";
+    cin >> size2;
+
+    Arrays obj1(size1);
+    Arrays obj2(size2);
+
+    // 🔁 Compare arrays using overloaded '=='
+    if (obj1 == obj2) {
+        cout << "The arrays are equal." << endl;
+    } else {
+        cout << "The arrays are not equal." << endl;
+    }
+
+    // 🔁 Copy one array to another using overloaded '='
+    obj1 = obj2;
+
+    // 📤 Display copied array
+    cout << "Array after copy:" << endl;
+    obj1.display();
+
+    return 0;
+}
