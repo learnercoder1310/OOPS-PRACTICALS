@@ -1,0 +1,156 @@
+Q-Create a class CDirectory having two data members - name and mobile number, and the member functions to perform the following tasks (accessed in the form of a menu driven program):
+a) Addition to add new records in a file, separated by new line.
+b) Search mobile number of a person.
+c) Update name or mobile number of a person.
+d) Display well formatted records in ascending order (A-Z) 
+code-
+
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+using namespace std;
+
+class CDirectory {
+private:
+    class Record {
+    public:
+        string name;
+        string mobileNumber;
+    };
+    Record records[100];
+    int numRecords = 0;
+    string filename;
+
+public:
+    CDirectory(string filename) : filename(filename) {
+        loadRecords();
+    }
+
+    void loadRecords() {
+        numRecords = 0;
+        ifstream file(filename);
+        if (file.is_open()) {
+            string line;
+            while (getline(file, line) && numRecords < 100) {
+                size_t pos = line.find(",");
+                if (pos != string::npos) {
+                    records[numRecords].name = line.substr(0, pos);
+                    records[numRecords].mobileNumber = line.substr(pos + 1);
+                    numRecords++;
+                }
+            }
+            file.close();
+        }
+    }
+
+    void saveRecords() {
+        ofstream file(filename);
+        if (file.is_open()) {
+            for (int i = 0; i < numRecords; i++) {
+                file << records[i].name << "," << records[i].mobileNumber << "\n";
+            }
+            file.close();
+        }
+    }
+
+    void addRecord(string name, string mobileNumber) {
+        if (numRecords < 100) {
+            records[numRecords].name = name;
+            records[numRecords].mobileNumber = mobileNumber;
+            numRecords++;
+            saveRecords();
+            cout << "Record added successfully.\n";
+        } else {
+            cout << "Maximum number of records reached. Cannot add more.\n";
+        }
+    }
+
+    void searchMobileNumber(string name) {
+        for (int i = 0; i < numRecords; i++) {
+            if (records[i].name == name) {
+                cout << "Mobile Number: " << records[i].mobileNumber << "\n";
+                return;
+            }
+        }
+        cout << "Record not found.\n";
+    }
+
+    void updateRecord(string name, string newName, string newMobileNumber) {
+        for (int i = 0; i < numRecords; i++) {
+            if (records[i].name == name) {
+                records[i].name = newName;
+                records[i].mobileNumber = newMobileNumber;
+                saveRecords();
+                cout << "Record updated successfully.\n";
+                return;
+            }
+        }
+        cout << "Record not found.\n";
+    }
+
+    void displayRecords() {
+        sort(records, records + numRecords, [](const Record& a, const Record& b) {
+            return a.name < b.name;
+        });
+        cout << "Records in ascending order:\n";
+        for (int i = 0; i < numRecords; i++) {
+            cout << "Name: " << records[i].name << ", Mobile Number: " << records[i].mobileNumber << "\n";
+        }
+    }
+};
+
+int main() {
+    CDirectory directory("directory.txt");
+    int choice;
+    string name, mobileNumber, newName, newMobileNumber;
+
+    do {
+        cout << "Menu:\n";
+        cout << "1. Add Record\n";
+        cout << "2. Search Mobile Number\n";
+        cout << "3. Update Record\n";
+        cout << "4. Display Records (A-Z)\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Name: ";
+                cin >> name;
+                cout << "Enter Mobile Number: ";
+                cin >> mobileNumber;
+                directory.addRecord(name, mobileNumber);
+                break;
+
+            case 2:
+                cout << "Enter Name to search: ";
+                cin >> name;
+                directory.searchMobileNumber(name);
+                break;
+
+            case 3:
+                cout << "Enter Name to update: ";
+                cin >> name;
+                cout << "Enter New Name: ";
+                cin >> newName;
+                cout << "Enter New Mobile Number: ";
+                cin >> newMobileNumber;
+                directory.updateRecord(name, newName, newMobileNumber);
+                break;
+
+            case 4:
+                directory.displayRecords();
+                break;
+
+            case 5:
+                cout << "Exiting program.\n";
+                break;
+
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
