@@ -1,0 +1,132 @@
+Q-Create two classes - Polar and Rectangle, representing polar and rectangle coordinates. Implement conversion routines to convert object of one class into another and vice versa.
+code-
+
+With routine in source object
+#include <iostream>
+#include <cmath>
+using namespace std;
+class CPolar {
+private:
+float radius;
+float angle;
+public:
+CPolar() {
+radius = 0;
+angle = 0;
+}
+CPolar(float r, float theta) {
+radius = r;
+angle = theta;
+}
+void display(void) {
+cout << radius << "radius = " << angle << " radians";
+}
+float getr() {
+return radius;
+}
+float gettheta() {
+return angle;
+}
+};
+class CRectangle {
+private:
+float x_cord;
+float y_cord;
+public:
+CRectangle() {
+x_cord = 0;
+y_cord = 0;
+}
+
+CRectangle(float x, float y) {
+x_cord = x;
+y_cord = y;
+}
+void display(void) {
+cout << x_cord << " is X_coordinate and " << y_cord << " is Y_coordinate";
+}
+CRectangle(CPolar P1) {
+x_cord = P1.getr() * cos(P1.gettheta());
+y_cord = P1.getr() * sin(P1.gettheta());
+}
+};
+int main() {
+CRectangle R1;
+CPolar P1(3, 30);
+float radius, angle;
+cout << "Enter radius: ";
+cin >> radius;
+cout << "Enter angle in radians: ";
+cin >> angle;
+R1 = P1;
+cout << "Polar coordinates = ";
+P1.display();
+cout << endl;
+cout << "Rectangular coordinates = ";
+R1.display();
+cout << endl;
+return 0;
+}
+
+With routine in destination object-
+#include <iostream>
+#include <cmath>
+using namespace std;
+class CRectangle {
+private:
+float x_cord;
+float y_cord;
+public:
+CRectangle() {
+x_cord = 0;
+y_cord = 0;
+}
+CRectangle(float x, float y) {
+x_cord = x;
+y_cord = y;
+}
+void display(void) {
+cout << x_cord << " is X_coordinate and " << y_cord << " is Y_coordinate";
+}
+};
+class CPolar {
+private:
+float radius;
+float angle;
+public:
+CPolar() {
+radius = 0;
+angle = 0;
+}
+CPolar(float r, float theta) {
+radius = r;
+angle = theta;
+
+}
+void display(void) {
+cout << radius << " meter and " << angle << " radians";
+}
+operator CRectangle() const;
+};
+CPolar :: operator CRectangle() const {
+float x_cord = radius * cos(angle);
+float y_cord = radius * sin(angle);
+return CRectangle(x_cord, y_cord);
+}
+int main() {
+CRectangle R1;
+CPolar P1(3, 30);
+float radius, angle;
+cout << "Enter radius: ";
+cin >> radius;
+cout << "Enter angle in radians: ";
+cin >> angle;
+R1 = P1;
+cout << "Polar coordinates = ";
+P1.display();
+cout << endl;
+cout << "Rectangular coordinates = ";
+R1.display();
+cout << endl;
+return 0;
+}
