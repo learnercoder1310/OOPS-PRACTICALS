@@ -1,0 +1,84 @@
+Q-Define a class in C++ to represent user-defined string type having following details:
+Constructor:
+  a) Create an uninitialized string, i.e., a string with length 0
+  b) Create a string constant, i.e., a string like "Hello World"
+Destructor: To deallocate the space or release the resources
+Data member: A string
+Member function (define it outside the class):To add two strings to make a third string
+  
+In all, the program should be able to perform the following tasks:
+  a) Create uninitialized string objects
+  b) Create objects initialized to string constants
+  c) Concatenates two strings
+  d) Display the string objects (All constructors, destructor or member functions should display message indicating invoking of default/parametrized constructors, destructor, or resulting strings)
+  e) Invoke a destructor
+code-
+#include <iostream>
+using namespace std;
+
+// 🧵 User-defined String Class
+class cString {
+private:
+    string str;  // To hold the string value
+
+public:
+    // a) 🏗️ Default Constructor: Creates uninitialized string
+    cString() {
+        str = "";
+        cout << "✅ Default constructor invoked: Empty string created.\n";
+    }
+
+    // b) 🏗️ Parameterized Constructor: Initializes to string constant
+    cString(string value) {
+        str = value;
+        cout << "✅ Parameterized constructor invoked: String initialized to \"" << str << "\"\n";
+    }
+
+    // 📎 Member function to concatenate two cString objects
+    cString concatenate(const cString &obj2) {
+        cString result;
+        result.str = this->str + obj2.str;
+        cout << "🔗 Concatenation performed: \"" << str << "\" + \"" << obj2.str << "\" = \"" << result.str << "\"\n";
+        return result;
+    }
+
+    // 🖨️ Function to display the string
+    void display() const {
+        cout << "📤 String content: \"" << str << "\"\n";
+    }
+
+    // 🧹 Destructor
+    ~cString() {
+        cout << "❌ Destructor called for string: \"" << str << "\" — Memory/resources released.\n";
+    }
+};
+
+
+// 🟩 Main Function
+int main() {
+    cout << "\n--- Program to Demonstrate User-defined String Class ---\n";
+
+    // a) Creating uninitialized string object
+    cString str1;
+
+    // b) Creating object with string constant
+    cString str2("Hello ");
+    cString str3("World!");
+
+    // d) Displaying strings
+    cout << "\n🔹 Displaying Initialized Strings:\n";
+    str2.display();
+    str3.display();
+
+    // c) Concatenate two strings
+    cout << "\n🔹 Performing Concatenation:\n";
+    cString result = str2.concatenate(str3);
+
+    // d) Display result
+    cout << "\n🔹 Displaying Concatenated String:\n";
+    result.display();
+
+    // e) Destructor will be invoked automatically when objects go out of scope
+    cout << "\n--- Program End ---\n";
+    return 0;
+}
