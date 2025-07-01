@@ -1,0 +1,129 @@
+Q-Write a menu driven program in C++ to perform arithmetic operations on complex numbers. Take integer variables as your private data members to represent real and imaginary parts of a complex number. Further, create public member functions to perform the following operations: 
+1) Get the input values from user. 
+2) Perform addition of two complex numbers. 
+3) Perform multiplication of two complex numbers. 
+4) Display the complex numbers.
+
+code-
+
+#include <iostream>
+using namespace std;
+
+// 📦 Complex Number Class
+class Complex {
+private:
+    // 🔢 Real and imaginary parts of two complex numbers
+    int real_part1, real_part2;
+    int img_part1, img_part2;
+
+    // 🔢 Results
+    int real_partsum = 0, img_partsum = 0;
+    int real_partmultiply = 0, img_partmultiply = 0;
+
+public:
+    // 📥 Function to take user input
+    void getinput() {
+        cout << "\nEnter real part of first complex number: ";
+        cin >> real_part1;
+
+        cout << "Enter real part of second complex number: ";
+        cin >> real_part2;
+
+        cout << "Enter imaginary part of first complex number: ";
+        cin >> img_part1;
+
+        cout << "Enter imaginary part of second complex number: ";
+        cin >> img_part2;
+    }
+
+    // ➕ Addition of two complex numbers
+    void addcomplex() {
+        real_partsum = real_part1 + real_part2;
+        img_partsum = img_part1 + img_part2;
+        cout << "✅ Complex numbers added successfully.\n";
+    }
+
+    // ✖️ Multiplication of two complex numbers
+    void multiplycomplex() {
+        real_partmultiply = (real_part1 * real_part2) - (img_part1 * img_part2);
+        img_partmultiply = (real_part1 * img_part2) + (img_part1 * real_part2);
+        cout << "✅ Complex numbers multiplied successfully.\n";
+    }
+
+    // 📤 Display Results
+    void display() {
+        cout << "\n============== Results ==============\n";
+
+        // Addition result
+        if (real_partsum != 0 || img_partsum != 0) {
+            cout << "Addition: ";
+            if (real_partsum != 0) cout << real_partsum;
+            if (img_partsum > 0) cout << " + " << img_partsum << "i\n";
+            else if (img_partsum < 0) cout << " " << img_partsum << "i\n";
+            else cout << "\n";
+        } else {
+            cout << "Addition result is zero.\n";
+        }
+
+        // Multiplication result
+        if (real_partmultiply != 0 || img_partmultiply != 0) {
+            cout << "Multiplication: ";
+            if (real_partmultiply != 0) cout << real_partmultiply;
+            if (img_partmultiply > 0) cout << " + " << img_partmultiply << "i\n";
+            else if (img_partmultiply < 0) cout << " " << img_partmultiply << "i\n";
+            else cout << "\n";
+        } else {
+            cout << "Multiplication result is zero.\n";
+        }
+
+        // Combined check
+        if (real_partsum == 0 && img_partsum == 0 &&
+            real_partmultiply == 0 && img_partmultiply == 0) {
+            cout << "Both addition and multiplication results are zero.\n";
+        }
+
+        cout << "=====================================\n";
+    }
+};
+
+// 🔄 Menu-driven Program
+int main() {
+    Complex obj_complex;
+    int choice;
+
+    do {
+        // 📋 Menu
+        cout << "\n========= Complex Number Menu =========\n";
+        cout << "1. Input Complex Numbers\n";
+        cout << "2. Add Complex Numbers\n";
+        cout << "3. Multiply Complex Numbers\n";
+        cout << "4. Display Results\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        // ⚙️ Menu Operation
+        switch (choice) {
+            case 1:
+                obj_complex.getinput();
+                break;
+            case 2:
+                obj_complex.addcomplex();
+                break;
+            case 3:
+                obj_complex.multiplycomplex();
+                break;
+            case 4:
+                obj_complex.display();
+                break;
+            case 5:
+                cout << "✅ Exiting the program. Goodbye!\n";
+                break;
+            default:
+                cout << "❌ Invalid choice. Please try again.\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
