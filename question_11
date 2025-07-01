@@ -1,0 +1,90 @@
+Q-Create a class CPublication having two data members - Title and Price, and two member functions - GetData and PutData to get and display data. Derive two classes: 
+
+a) CBook having data member - PageCount 
+b) CTape having a data member - Time (representing running time in minutes) 
+
+Use polymorphism to invoke the member functions of various classes.
+
+code-
+
+#include <iostream>
+using namespace std;
+
+// 📚 Base Class: Publication
+class CPublication {
+public:
+    string title;
+    float price;
+
+    // 🧾 Virtual function to get data
+    virtual void getInfo() {
+        cout << "Enter the title: ";
+        cin >> title;
+
+        cout << "Enter the price: ";
+        cin >> price;
+    }
+
+    // 📤 Virtual function to display data
+    virtual void putInfo() {
+        cout << "Title: " << title << endl;
+        cout << "Price: " << price;
+    }
+};
+
+// 📘 Derived Class: Book
+class CBook : public CPublication {
+private:
+    int pageCount;
+
+public:
+    void getInfo() override {
+        CPublication::getInfo();
+        cout << "Enter the number of pages: ";
+        cin >> pageCount;
+    }
+
+    void putInfo() override {
+        CPublication::putInfo();
+        cout << endl << "Pages: " << pageCount;
+    }
+};
+
+// 💿 Derived Class: Tape (further from Book)
+class CTape : public CBook {
+private:
+    float min;
+
+public:
+    void getInfo() override {
+        CBook::getInfo();
+        cout << "Enter the time in minutes: ";
+        cin >> min;
+    }
+
+    void putInfo() override {
+        CBook::putInfo();
+        cout << endl << "Time: " << min << " mins";
+    }
+};
+
+// 🟩 Main Function
+int main() {
+    CPublication* ptrPublication;
+
+    // 📘 Book object via base pointer
+    CBook objBook;
+    ptrPublication = &objBook;
+    // ptrPublication->getInfo();
+    // ptrPublication->putInfo();
+
+    // 💿 Tape object via base pointer
+    CTape objTape;
+    ptrPublication = &objTape;
+
+    // 🔁 Call virtual functions (runtime polymorphism)
+    ptrPublication->getInfo();
+    ptrPublication->putInfo();
+
+    return 0;
+}
