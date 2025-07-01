@@ -1,0 +1,49 @@
+Q-Define a base class CShape and derive two classes - CCircle and CRectangle. In the main method, create array of pointers to the base class to store the addresses of derived class objects.
+Using run-time type identification (RTTI), determine the type of the pointer belonging to different objects of the derived classes.
+code-
+#include <iostream>
+
+using namespace std;
+
+class CShape {
+public :
+virtual void shapes()
+{
+cout << "CShape is invoked !";
+}
+};
+
+class CRectangle: public CShape {
+
+public :
+void shapes ()
+{
+
+cout << " CRectangle is invoked !"<< endl;
+}
+};
+
+class CCircle : public CShape {
+public :
+void shapes ()
+{
+cout << "CCircle is invoked"<< endl;
+}
+};
+
+int main()
+{
+cout<<"Hello World"<< endl;
+
+CShape * pBase;
+CRectangle rec;
+CCircle cir;
+
+pBase = &rec;
+pBase->shapes();
+cout << typeid(*pBase).name()<< endl;
+pBase = & cir;
+pBase->shapes();
+cout << typeid(*pBase).name();
+return 0;
+}
