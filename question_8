@@ -1,0 +1,57 @@
+Q- Define a class in C++ to record your exams datesheet (date and subjects) in year 2022. Use operator overloading to overload the following operators:
+
+a) >> to input the data for a student
+b) >> to output the data for a student
+
+code-
+#include <iostream>
+using namespace std;
+
+// 🗓️ Class to handle exam date sheet
+class DateSheet {
+private:
+    string date[6];  // Array to store 6 dates
+    string sub[6];   // Array to store 6 subjects
+
+public:
+    // 🔧 Default Constructor
+    DateSheet() {}
+
+    // ⌨️ Friend function to overload >> for input
+    friend istream& operator >> (istream& input, DateSheet& DS) {
+        for (int iCount = 0; iCount < 6; iCount++) {
+            cout << "Enter subject " << iCount + 1 << ": ";
+            input >> DS.sub[iCount];
+
+            cout << "Enter date " << iCount + 1 << " in dd/mm/yyyy format: ";
+            input >> DS.date[iCount];
+
+            cout << "\n";
+        }
+        return input;
+    }
+
+    // 🖨️ Friend function to overload << for output
+    friend ostream& operator << (ostream& output, DateSheet& DS) {
+        for (int jCount = 0; jCount < 6; jCount++) {
+            output << "Subject " << jCount + 1 << ": " << DS.sub[jCount] << endl;
+            output << "DATE " << jCount + 1 << ": " << DS.date[jCount] << endl;
+            output << "\n";
+        }
+        return output;
+    }
+};
+
+// 🟩 Main Function
+int main() {
+    DateSheet DS;
+
+    // ⌨️ Input
+    cin >> DS;
+
+    // 🖨️ Output
+    cout << "Exam DATE sheet is:\n";
+    cout << DS;
+
+    return 0;
+}
