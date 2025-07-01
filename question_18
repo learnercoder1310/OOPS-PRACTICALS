@@ -1,0 +1,79 @@
+Q-Implement pointers to functions to call a function
+- without any argument
+- with any number of arguments
+- having default parameters
+
+Further, implement pointers to class members using
+- an object or its reference
+- pointer to the objects
+
+code-
+#include <iostream>
+
+class MyClass {
+public:
+int add(int a, int b) {
+return a + b;
+}
+
+double mulƟply(double x, double y) {
+return x * y;
+}
+};
+
+// FuncƟon pointer without any argument
+void (*funcPointerNoArgs)() = []() {
+
+std::cout << "FuncƟon pointer without any argument called." <<
+std::endl;
+};
+
+// FuncƟon pointer with any number of arguments
+int (*funcPointerWithArgs)(int, int) = [](int a, int b) {
+return a + b;
+};
+
+// FuncƟon pointer with default parameters
+double (*funcPointerWithDefaultParams)(double, double) =
+[](double x, double y) {
+return x * y;
+};
+
+int main() {
+// Call funcƟon pointer without any argument
+funcPointerNoArgs();
+
+// Call funcƟon pointer with any number of arguments
+int result = funcPointerWithArgs(3, 4);
+std::cout << "FuncƟon pointer with args result: " << result <<
+std::endl;
+
+// Call funcƟon pointer with default parameters
+
+double product = funcPointerWithDefaultParams(2.5, 3.5);
+std::cout << "FuncƟon pointer with default params result: " <<
+product << std::endl;
+
+// Pointers to class members using an object or its reference
+MyClass obj;
+int (MyClass::*memberFunc)(int, int) = &MyClass::add;
+
+int sum = (obj.*memberFunc)(5, 6);
+std::cout << "Result using object: " << sum << std::endl;
+
+MyClass& objRef = obj;
+sum = (objRef.*memberFunc)(7, 8);
+std::cout << "Result using object reference: " << sum << std::endl;
+
+// Pointers to class members using pointer to objects
+MyClass* objPtr = &obj;
+double (MyClass::*memberFuncPtr)(double, double) =
+&MyClass::mulƟply;
+
+double productFromClassPtr = (objPtr->*memberFuncPtr)(2.5,
+3.5);
+std::cout << "Result using object pointer: " << productFromClassPtr
+<< std::endl;
+
+return 0;
+}
