@@ -1,0 +1,175 @@
+Q- Create a Queue class having integral elements in C++. Use operator overloading to implement following operations with and without friend function:
+
+a) + to insert the elements
+b) - to remove the elements
+
+Ensure you check overflow and underflow conditions while performing aforementioned operations. 
+
+Do the implementation with and without friend function!
+
+code-
+Queue Without Friend Function:
+#include <iostream>
+using namespace std;
+
+class Queue {
+private:
+    int* elements;
+    int front;
+    int rear;
+    int capacity;
+    int size;
+
+public:
+    // 🏗️ Constructor
+    Queue(int capacity) {
+        this->capacity = capacity;
+        elements = new int[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+
+    // ➕ Enqueue operation
+    void enqueue(int value) {
+        if (size < capacity) {
+            rear = (rear + 1) % capacity;
+            elements[rear] = value;
+            size++;
+        } else {
+            throw overflow_error("Queue is full");
+        }
+    }
+
+    // ➖ Dequeue operation
+    int dequeue() {
+        if (!isEmpty()) {
+            int value = elements[front];
+            front = (front + 1) % capacity;
+            size--;
+            return value;
+        } else {
+            throw underflow_error("Queue is empty");
+        }
+    }
+
+    // ❓ Check if empty
+    bool isEmpty() const {
+        return size == 0;
+    }
+
+    // ❌ Destructor
+    ~Queue() {
+        delete[] elements;
+    }
+};
+
+// 🟩 Main Function
+int main() {
+    Queue q(5);
+
+    try {
+        q.enqueue(1);
+        q.enqueue(2);
+        q.enqueue(3);
+
+        int removed;
+
+        removed = q.dequeue();
+        cout << "Removed: " << removed << endl;
+
+        removed = q.dequeue();
+        cout << "Removed: " << removed << endl;
+
+        removed = q.dequeue();
+        cout << "Removed: " << removed << endl;
+    }
+    catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
+    }
+
+    return 0;
+}
+Queue With Friend Function & Operator Overloading:
+#include <iostream>
+using namespace std;
+
+class Queue {
+private:
+    int* elements;
+    int front;
+    int rear;
+    int capacity;
+    int size;
+
+public:
+    // 🏗️ Constructor
+    Queue(int capacity) {
+        this->capacity = capacity;
+        elements = new int[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+
+    // ❓ Check if empty
+    bool isEmpty() const {
+        return size == 0;
+    }
+
+    // ➕ Friend function for enqueue using '+' operator
+    friend Queue operator+(Queue& q, int value) {
+        if (q.size < q.capacity) {
+            q.rear = (q.rear + 1) % q.capacity;
+            q.elements[q.rear] = value;
+            q.size++;
+        } else {
+            throw overflow_error("Queue is full");
+        }
+        return q;
+    }
+
+    // ➖ Friend function for dequeue using '-' operator
+    friend Queue operator-(Queue& q, int& value) {
+        if (!q.isEmpty()) {
+            value = q.elements[q.front];
+            q.front = (q.front + 1) % q.capacity;
+            q.size--;
+        } else {
+            throw underflow_error("Queue is empty");
+        }
+        return q;
+    }
+
+    // ❌ Destructor
+    ~Queue() {
+        delete[] elements;
+    }
+};
+
+// 🟩 Main Function
+int main() {
+    Queue q(5);
+
+    try {
+        q = q + 1;
+        q = q + 2;
+        q = q + 3;
+
+        int removed;
+
+        q = q - removed;
+        cout << "Removed: " << removed << endl;
+
+        q = q - removed;
+        cout << "Removed: " << removed << endl;
+
+        q = q - removed;
+        cout << "Removed: " << removed << endl;
+    }
+    catch (const exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+
+    return 0;
+}
