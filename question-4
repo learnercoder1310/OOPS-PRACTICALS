@@ -1,0 +1,55 @@
+Q-Write a program in C++ to define two classes - Distance1 and Distance2 such that Distance1 stores distance in miles and Distance2 stores distance in kmeters & meters. 
+Further, write a function which reads the values of the objects and adds an object of Distance1 with an object of Distance2. Display the values in terms of miles or kmeters & meters 
+depending on the type of object being used to invoke the function by using friend function.
+code-
+#include <iostream>
+using namespace std;
+class Distance2;
+class Distance1
+{
+private:
+float miles;
+public:
+Distance1(float m) : miles(m)
+{}
+friend void addDistances(Distance1 d1, Distance2 d2);
+};
+class Distance2
+{
+private:
+int km;
+int meters;
+public:
+Distance2(int k, int m) : km(k), meters(m)
+{}
+friend void addDistances(Distance1 d1, Distance2 d2);
+};
+void addDistances(Distance1 d1, Distance2 d2)
+{
+float totalMiles = d1.miles + (d2.km * 0.621371) + (d2.meters * 0.000621371);
+int totalKm = totalMiles / 0.621371;
+int totalMeters = (totalMiles / 0.621371 - totalKm) * 1000;
+if (d1.miles > 0)
+{
+cout << "Total distance: " << totalMiles << " miles" << std::endl;
+} else
+{
+cout << "Total distance: " << totalKm << " kilometers " << totalMeters <<
+" meters" << std::endl;
+}
+}
+
+int main()
+
+{
+float miles;
+int km, meters;
+cout << "Enter distance in miles: ";
+cin >> miles;
+cout << "Enter distance in kilometers and meters (e.g., 10 500): ";
+cin >> km >> meters;
+Distance1 dist1(miles);
+Distance2 dist2(km, meters);
+addDistances(dist1, dist2);
+return 0;
+}
