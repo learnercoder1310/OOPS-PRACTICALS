@@ -1,0 +1,48 @@
+Q-Create a class Distance having two data members - Kilometer and Meter. Further, implement 
+
+a) a conversion function which converts an object of Distance into distance in miles.
+b) a constructor which converts distance in miles into an object of Distance class.
+
+code-
+#include<iostream>
+using namespace std;
+
+class Distance {
+private:
+double kilometers;
+double meters;
+
+public:
+Distance(double km = 0, double m = 0) : kilometers(km), meters(m) {}
+
+Distance(double &miles) {
+
+kilometers = miles / 0.621371;
+meters = (miles / 0.000621371) - (kilometers * 1000);
+}
+
+double toMiles()
+{
+double totalMiles = kilometers * 0.621371 + meters * 0.000621371;
+return totalMiles;
+}
+
+void display() const {
+cout << kilometers << " kilometers and " << meters << " meters" << endl;
+}
+};
+
+int main() {
+
+Distance distance1(5, 250);
+cout << "Distance 1: ";
+distance1.display();
+std::cout << "= " << distance1.toMiles() << " miles" << endl;
+
+Distance distance2(10.5);
+std::cout << "Distance 2: ";
+distance2.display();
+std::cout << "= " << distance2.toMiles() << " miles" << std::endl;
+
+return 0;
+}
